@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pranked by Kewal</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: white;
+      color: black;
+      font-family: Arial, sans-serif;
+      height: 100%;
+      width: 100%;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: white;
+      color: black;
+      font-size: 2.5em;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 9999;
+    }
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay">
+    You have been pranked by Kewal 😈
+  </div>
+  <div id="timer">05:00</div>
+
+  <script>
+    // Block back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.pushState(null, null, location.href);
+    };
+
+    // Lock keyboard
+    window.addEventListener('keydown', e => e.preventDefault(), true);
+
+    // Countdown logic
+    let remainingTime = 5 * 60;
+    const timerElement = document.getElementById('timer');
+
+    const interval = setInterval(() => {
+      const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+      const seconds = String(remainingTime % 60).padStart(2, '0');
+      timerElement.textContent = `${minutes}:${seconds}`;
+      remainingTime--;
+
+      if (remainingTime < 0) {
+        clearInterval(interval);
+        document.getElementById('overlay').style.display = 'none';
+        timerElement.style.display = 'none';
+        // Unlock interaction after 5 minutes
+        document.body.style.pointerEvents = 'auto';
+        document.body.style.userSelect = 'auto';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
+n
